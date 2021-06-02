@@ -15,7 +15,7 @@ class OrderCard {
     }
     @Test
     void shouldTest() {
-        $("[data-test-id=name] input").setValue("Василий");
+        $("[data-test-id=name] input").setValue("Василий Иванов");
         $("[data-test-id=phone] input").setValue("+79270000000");
         $("[data-test-id=agreement]").click();
         $("[type=button]").click();
