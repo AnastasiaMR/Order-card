@@ -1,9 +1,9 @@
 package ru.netology.web;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,27 +14,26 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 class OrderCard {
+    private WebDriver driver;
 
-    @BeforeClass
-    public static void setupClass() {
+    @BeforeAll
+    static void setUpAll() {
         WebDriverManager.chromedriver().setup();
+    }
+
+    @BeforeEach
+    void setUp() {
+
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--no-sandbox");
         options.addArguments("--headless");
-        ChromeDriver driver = new ChromeDriver( options );
+        driver = new ChromeDriver(options);
     }
 
-    @Before
-    public void setupTest() {
-        ChromeDriver driver = new ChromeDriver( );
-    }
-
-    @After
-    public void teardown() {
-        WebDriver driver = null;
+    @AfterEach
+    void tearDown() {
         if (driver != null) {
             driver.quit();
+            driver = null;
         }
     }
 
