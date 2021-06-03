@@ -1,7 +1,12 @@
 package ru.netology.web;
 
-import org.junit.jupiter.api.BeforeEach;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Selenide.$;
@@ -9,26 +14,41 @@ import static com.codeborne.selenide.Selenide.open;
 
 class OrderCard {
 
-    @BeforeEach
-    void setUp() {
-        open("http://localhost:9999");
+    @BeforeClass
+    public static void setupClass() {
+        WebDriverManager.chromedriver().setup();
     }
-    @Test
-    void shouldTest() {
-        $("[data-test-id=name] input").setValue("Василий Иванов");
-        $("[data-test-id=phone] input").setValue("+79270000000");
-        $("[data-test-id=agreement]").click();
-        $("[type=button]").click();
-        $("[data-test-id=order-success]").shouldHave(exactText("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время."));
+
+    @Before
+    public void setupTest() {
+        ChromeDriver driver = new ChromeDriver( );
+    }
+
+    @After
+    public void teardown() {
+        WebDriver driver = null;
+        if (driver != null) {
+            driver.quit();
+        }
     }
 
     @Test
-    void shouldTestNoName() {
-        $("[data-test-id=name] input").setValue("");
-        $("[data-test-id=phone] input").setValue("+79270000000");
-        $("[data-test-id=agreement]").click();
-        $("[type=button]").click();
-        $(".input__sub").shouldHave(exactText("Поле обязательно для заполнения"));
+    void shouldTest( ) {
+        open("http://localhost:9999");
+        $( "[data-test-id=name] input" ).setValue( "Василий Иванов" );
+        $( "[data-test-id=phone] input" ).setValue( "+79270000000" );
+        $( "[data-test-id=agreement]" ).click( );
+        $( "[type=button]" ).click( );
+        $( "[data-test-id=order-success]" ).shouldHave( exactText( "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время." ) );
+    }
+
+    @Test
+    void shouldTestNoName( ) {
+        open("http://localhost:9999");
+        $( "[data-test-id=name] input" ).setValue( "" );
+        $( "[data-test-id=phone] input" ).setValue( "+79270000000" );
+        $( "[data-test-id=agreement]" ).click( );
+        $( "[type=button]" ).click( );
+        $( ".input__sub" ).shouldHave( exactText( "Поле обязательно для заполнения" ) );
     }
 }
-
